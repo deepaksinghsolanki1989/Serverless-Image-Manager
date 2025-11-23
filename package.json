@@ -1,0 +1,19 @@
+{
+  "name": "serverless-image-manager",
+  "version": "1.0.0",
+  "description": "AWS SAM TypeScript single Lambda handler for GET/POST/DELETE (works with sam local start-api)",
+  "main": "dist/handler.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "start": "npm run build && sam local start-api",
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.114",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {}
+}
