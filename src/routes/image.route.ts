@@ -1,26 +1,27 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import ImageController from "../controllers/image.controller";
 import { jsonResponse } from "../utils";
 
 
-export async function handleRoute(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResult> {
-  const method = event.requestContext?.http?.method || "";
-  const path = event.rawPath || "/";
+export async function handleRoute(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
+  const method = (event.httpMethod || (event.requestContext as any)?.http?.method || "GET").toUpperCase();
+  const id = event.pathParameters?.id;
 
   const imageController = new ImageController();
 
-  if (method === "POST" && path === "/upload") {
+  console.log(JSON.stringify(event, null, 2));
+  console.log(`Routing request:`, { method });
+
+  if (method === "POST") {
     return await imageController.uploadImage(event);
   }
 
-  if (method === "GET" && path.startsWith("/image/")) {
-    const id = path.split("/")[2];
+  if (method === "GET") {
     if (!id) return jsonResponse(400, { message: "Missing image id" });
     return await imageController.getImage(id);
   }
 
-  if (method === "DELETE" && path.startsWith("/image/")) {
-    const id = path.split("/")[2];
+  if (method === "DELETE") {
     if (!id) return jsonResponse(400, { message: "Missing image id" });
     return await imageController.deleteImage(id);
   }
