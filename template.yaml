@@ -8,7 +8,7 @@ Description: >
 Globals:
   Function:
     Timeout: 30
-    Runtime: nodejs24.x
+    Runtime: nodejs20.x
     Handler: dist/handler.handler
     Architectures:
       - x86_64
@@ -42,6 +42,8 @@ Resources:
     Properties:
       CodeUri: .
       Description: Single handler for / routes (GET/POST/DELETE)
+      FunctionUrlConfig:
+        AuthType: NONE
       Policies:
         - Version: "2012-10-17"
           Statement:
@@ -58,8 +60,23 @@ Resources:
                 - dynamodb:DeleteItem
               Resource: !GetAtt ImagesTable.Arn
       Events:
-        ApiRoot:
+        UploadImage:
           Type: Api
           Properties:
             Path: /
-            Method: ANY
+            Method: POST
+        GetImage:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: GET
+        DeleteImage:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: DELETE
+
+Outputs:
+  ImageFunctionUrl:
+    Description: "Lambda Function URL for the image handler"
+    Value: !GetAtt ImageFunctionUrl.FunctionUrl

@@ -13,6 +13,7 @@ export async function handleRoute(event: APIGatewayProxyEvent): Promise<APIGatew
   const method = (event.httpMethod || (event.requestContext as any)?.http?.method || "GET").toUpperCase();
   const id = event.pathParameters?.id;
 
+  console.log(`Received ${method} request for image with id: ${id || "N/A"} from IP: ${clientIp}`);
   const imageController = new ImageController();
 
   if (method === "POST") {
