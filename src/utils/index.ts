@@ -1,6 +1,6 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyEventV2, APIGatewayProxyResult } from "aws-lambda";
 
-export function getClientIp(event: APIGatewayProxyEvent): string {
+export function getClientIp(event: APIGatewayProxyEventV2): string {
   const xf = event.headers?.["x-forwarded-for"] || event.headers?.["X-Forwarded-For"];
   if (xf) {
     const parts = xf.split(",");
