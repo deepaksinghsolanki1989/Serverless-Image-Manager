@@ -5,7 +5,6 @@ import { jsonResponse } from "../utils";
 
 export default class ImageController {
   async uploadImage(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
-    console.log({ isBase64Encoded: !event.isBase64Encoded, bodyPresent: !event.body });
     if (!event.body) {
       return { statusCode: 400, body: "Missing body" };
     }

@@ -4,7 +4,6 @@ import { jsonResponse } from "./utils";
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
-    console.log("Received event:", JSON.stringify(event, null,));
     return await handleRoute(event);
   } catch (err: any) {
     console.error("Unhandled error in handler:", err);

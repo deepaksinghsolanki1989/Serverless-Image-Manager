@@ -1,16 +1,19 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import ImageController from "../controllers/image.controller";
-import { jsonResponse } from "../utils";
+import { isRateLimited } from "../services/rate-limiter.service";
+import { getClientIp, jsonResponse } from "../utils";
 
 
 export async function handleRoute(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
+  const clientIp = getClientIp(event);
+  if (isRateLimited(clientIp)) {
+    return jsonResponse(429, { message: "Too many requests" });
+  }
+
   const method = (event.httpMethod || (event.requestContext as any)?.http?.method || "GET").toUpperCase();
   const id = event.pathParameters?.id;
 
   const imageController = new ImageController();
-
-  console.log(JSON.stringify(event, null, 2));
-  console.log(`Routing request:`, { method });
 
   if (method === "POST") {
     return await imageController.uploadImage(event);

@@ -13,7 +13,7 @@ export async function uploadImage(params: { filename: string; contentType: strin
   const { filename, contentType, buffer } = params;
   const id = Date.now().toString(36);
   const s3Key = `images/${id}-${filename}`;
-console.log("Uploading image to S3 with key:", {s3Key, BUCKET, TABLE});
+
   await s3.send(
     new PutObjectCommand({
       Bucket: BUCKET,

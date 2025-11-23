@@ -1,4 +1,18 @@
-import { APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+
+export function getClientIp(event: APIGatewayProxyEvent): string {
+  const xf = event.headers?.["x-forwarded-for"] || event.headers?.["X-Forwarded-For"];
+  if (xf) {
+    const parts = xf.split(",");
+    return parts[0].trim();
+  }
+
+  // @ts-ignore
+  const sourceIp = event.requestContext?.http?.sourceIp;
+  if (sourceIp) return sourceIp;
+
+  return "unknown";
+}
 
 export function jsonResponse(status: number, body: any): APIGatewayProxyResult {
   return {
