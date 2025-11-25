@@ -7,8 +7,8 @@ services:
       - SERVICES=s3,dynamodb
       - DEFAULT_REGION=ap-south-1
       - DATA_DIR=/tmp/localstack/data
-      - AWS_ACCESS_KEY_ID=AKIARLKYIEKOWYAJAYVD
-      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
     ports:
       - "4566:4566"   # LocalStack edge port (S3+DynamoDB)
     volumes:
