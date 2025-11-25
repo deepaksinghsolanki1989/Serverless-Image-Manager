@@ -167,6 +167,21 @@ npm start
 ```
 
 The API will be available at `http://localhost:3000`
+
+## SAM Deploy
+
+### Build the Project
+
+```bash
+sam build
+```
+
+### Deploy with SAM
+
+```bash
+sam deploy --guided
+```
+
 ## Security Considerations
 
 - Rate limiting is implemented to prevent abuse

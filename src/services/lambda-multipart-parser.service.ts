@@ -16,6 +16,8 @@ interface ParsedOutput {
 export const parse = async (
   event: APIGatewayProxyEventV2
 ): Promise<ParsedOutput> => {
+
+  console.log({ event });
   const contentType =
     event.headers["content-type"] ?? event.headers["Content-Type"];
 

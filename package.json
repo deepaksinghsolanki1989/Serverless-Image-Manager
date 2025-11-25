@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist node_modules .aws-sam",
-    "start": "npm run build && sam build && sam local start-api",
+    "start": "npm run build && sam build && sam local start-api --env-vars env.json",
     "test": "jest",
     "lint": "eslint . --ext .ts"
   },

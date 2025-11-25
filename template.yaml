@@ -15,7 +15,10 @@ Globals:
     Environment:
       Variables:
         TABLE_NAME: !Ref ImagesTable
-        BUCKET_NAME: !Sub "${ImageBucket}"
+        BUCKET_NAME: !Ref "${ImageBucket}"
+  Api:
+    BinaryMediaTypes:
+      - 'multipart/form-data'
 
 Resources:
   ImageBucket:
@@ -44,6 +47,15 @@ Resources:
       Description: Single handler for / routes (GET/POST/DELETE)
       FunctionUrlConfig:
         AuthType: NONE
+        Cors:
+          AllowOrigins:
+            - '*'
+          AllowMethods:
+            - GET
+            - POST
+            - DELETE
+          AllowHeaders:
+            - '*'
       Policies:
         - Version: "2012-10-17"
           Statement:

@@ -4,8 +4,30 @@ import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { Readable } from "stream";
 import { ImageMetadata } from "../types";
 
-const s3 = new S3Client({});
-const ddb = new DynamoDBClient({});
+const REGION = process.env.AWS_REGION || "ap-south-1";
+const ACCESS_KEY = process.env.AWS_ACCESS_KEY_ID;
+const SECRET_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+
+const s3Endpoint = process.env.S3_ENDPOINT;
+const ddbEndpoint = process.env.DYNAMODB_ENDPOINT;
+
+const credentials = (ACCESS_KEY && SECRET_KEY)
+  ? { accessKeyId: ACCESS_KEY, secretAccessKey: SECRET_KEY }
+  : undefined;
+
+const s3 = new S3Client({
+  region: REGION,
+  endpoint: s3Endpoint,
+  forcePathStyle: true,
+  credentials,
+});
+
+const ddb = new DynamoDBClient({
+  region: REGION,
+  endpoint: ddbEndpoint,
+  credentials,
+});
+
 const TABLE = process.env.TABLE_NAME || "";
 const BUCKET = process.env.BUCKET_NAME || "";
 
@@ -13,7 +35,8 @@ export async function uploadImage(params: { filename: string; contentType: strin
   const { filename, contentType, buffer } = params;
   const id = Date.now().toString(36);
   const s3Key = `images/${id}-${filename}`;
-
+  console.log(process.env.S3_ENDPOINT);
+  console.log({ BUCKET })
   await s3.send(
     new PutObjectCommand({
       Bucket: BUCKET,
@@ -43,12 +66,18 @@ export async function uploadImage(params: { filename: string; contentType: strin
 }
 
 export async function getImage(id: string): Promise<{ data: Buffer; contentType?: string; metadata: ImageMetadata } | null> {
+  console.log({
+    TableName: TABLE,
+    Key: marshall({ id })
+  })
   const resp = await ddb.send(
     new GetItemCommand({
       TableName: TABLE,
       Key: marshall({ id })
     })
   );
+
+  console.log({ resp });
 
   if (!resp.Item) return null;
   const meta = unmarshall(resp.Item) as ImageMetadata;
