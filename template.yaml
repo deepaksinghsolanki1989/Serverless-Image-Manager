@@ -14,7 +14,7 @@ Globals:
       - x86_64
     Environment:
       Variables:
-        IMAGES_TABLE: !Ref ImagesTable
+        TABLE_NAME: !Ref ImagesTable
         BUCKET_NAME: !Sub "${ImageBucket}"
 
 Resources:
@@ -63,12 +63,12 @@ Resources:
         UploadImage:
           Type: Api
           Properties:
-            Path: /
+            Path: /upload
             Method: POST
         GetImage:
           Type: Api
           Properties:
-            Path: /{id}
+            Path: /image/{id}
             Method: GET
         DeleteImage:
           Type: Api

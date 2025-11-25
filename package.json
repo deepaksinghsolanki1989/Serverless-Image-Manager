@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist node_modules .aws-sam",
-    "start": "npm run build && sam local start-api",
-    "test": "echo \"No tests configured\" && exit 0",
+    "start": "npm run build && sam build && sam local start-api",
+    "test": "jest",
     "lint": "eslint . --ext .ts"
   },
   "author": "",
@@ -16,13 +16,17 @@
     "@aws-sdk/client-dynamodb": "^3.936.0",
     "@aws-sdk/client-s3": "^3.937.0",
     "@aws-sdk/util-dynamodb": "^3.936.0",
-    "lambda-multipart-parser": "^1.0.1"
+    "busboy": "^1.6.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.159",
+    "@types/busboy": "^1.5.4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "aws-sdk-client-mock": "^4.1.0",
     "esbuild": "^0.27.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
   }
 }

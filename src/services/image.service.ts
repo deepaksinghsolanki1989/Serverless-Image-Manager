@@ -6,8 +6,8 @@ import { ImageMetadata } from "../types";
 
 const s3 = new S3Client({});
 const ddb = new DynamoDBClient({});
-const TABLE = process.env.IMAGES_TABLE || "";
-const BUCKET = process.env.BUCKET_NAME || process.env.BUCKET || "";
+const TABLE = process.env.TABLE_NAME || "";
+const BUCKET = process.env.BUCKET_NAME || "";
 
 export async function uploadImage(params: { filename: string; contentType: string; buffer: Buffer }) {
   const { filename, contentType, buffer } = params;
